@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow">
+    <title>OceanLife AI - TikTok OAuth</title>
+
+    <style>
+        body {
+            background: #061526;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        h1 {
+            color: #00c8ff;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>OceanLife AI</h1>
+    <p id="status">Validando retorno do TikTok...</p>
+
+    <script>
+        (() => {
+            const params = new URLSearchParams(window.location.search);
+            const status = document.getElementById("status");
+
+            const code = params.get("code");
+            const state = params.get("state");
+            const error = params.get("error");
+
+            history.replaceState(null, "", window.location.pathname);
+
+            if (error || !code || !state) {
+                status.textContent =
+                    "Nenhuma autorização válida recebida.";
+                return;
+            }
+
+            const destination = new URL(
+                "http://127.0.0.1:4007/integrations/social/tiktok"
+            );
+
+            destination.searchParams.set("code", code);
+            destination.searchParams.set("state", state);
+
+            status.textContent = "Retornando ao Postiz local...";
+
+            window.location.replace(destination.toString());
+        })();
+    </script>
+
+</body>
+</html>
